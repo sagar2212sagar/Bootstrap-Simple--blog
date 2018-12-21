@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+{% for obj in object_list %}
+ <div class="row">
+    <div class="col-sm-8">
+    <div class="thumbnail">
+      <div class="caption">
+          <h1><a href='{{ obj.get_absolute_url}}'>{{obj.title}}</a><small style="font-size:15px;">
+              {{obj.timestamp|timesince}} ago
+          </small></h1>
+          {% if obj.image %}
+          <span class="border border-success">
+          <img src='{{obj.image.url}}' class="img-thumbnail"/>
+              </span>
+          {% endif %}
+        <p>{{obj.content|linebreaks|truncatechars:80}}</p>
+          .....
+          <hr>
+           <div class="fb-like" data-href="{{ request.build_absolute_url}}" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+      </div>
+    </div>
+  </div>
+ </div>
+
+{% endfor %}
+
+
+    <div class="pagination">
+    <span class="step-links">
+        {% if object_list.has_previous %}
+
+            <a href="?page={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{request.GET.q}}{% endif %}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ object_list.number }} of {{object_list.paginator.num_pages }}.
+        </span>
+
+        {% if object_list.has_next %}
+            <a href="?page={{ object_list.next_page_number }}{% if request.GET.q %}&q={{request.GET.q}}{% endif %}">next</a>
+            <a href="?page={{ object_list.paginator.num_pages }}{% if request.GET.q %}&q={{request.GET.q}}{% endif %}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</div>
+{% endblock content %}
+
